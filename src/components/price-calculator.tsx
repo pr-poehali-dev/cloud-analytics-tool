@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
+import { sendLead } from "@/lib/leads"
 
 const coffeeOptions = [
   { id: "brazil", name: "Бразилия Сантос", origin: "Бразилия", notes: "Шоколад, орех, карамель", price: 580 },
@@ -43,6 +44,9 @@ export function PriceCalculator() {
   const [selectedPackaging, setSelectedPackaging] = useState(packagingOptions[0])
   const [selectedDesign, setSelectedDesign] = useState(designOptions[0])
   const [selectedVolume, setSelectedVolume] = useState(volumeOptions[1])
+  const [showLeadForm, setShowLeadForm] = useState(false)
+  const [leadForm, setLeadForm] = useState({ name: "", phone: "" })
+  const [leadStatus, setLeadStatus] = useState<"idle" | "loading" | "success" | "error">("idle")
 
   const packageWeight = selectedPackaging.volume === "1 кг" ? 1 : selectedPackaging.volume === "500 г" ? 0.5 : 0.25
   const packagesCount = Math.ceil(selectedVolume.value / packageWeight)
@@ -51,6 +55,26 @@ export function PriceCalculator() {
   const designTotal = selectedDesign.price
   const total = coffeeTotal + packagingTotal + designTotal
   const pricePerKg = Math.round(total / selectedVolume.value)
+
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!leadForm.name || !leadForm.phone) return
+    setLeadStatus("loading")
+    const res = await sendLead({
+      name: leadForm.name,
+      phone: leadForm.phone,
+      source: "Калькулятор",
+      coffee: selectedCoffee.name,
+      roast: selectedRoast.name,
+      packaging: `${selectedPackaging.name} ${selectedPackaging.volume}`,
+      design: selectedDesign.name,
+      volume: selectedVolume.label,
+      comment: `Расчёт: ${total.toLocaleString("ru")} ₽ (${pricePerKg.toLocaleString("ru")} ₽/кг)`,
+    })
+    setLeadStatus(res.ok ? "success" : "error")
+  }
+
+  const inputCls = "w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
 
   return (
     <section className="w-full px-5 py-8 md:py-16">
@@ -242,12 +266,53 @@ export function PriceCalculator() {
                 Расчёт ориентировочный. Точную цену согласуем после обсуждения деталей.
               </p>
 
-              <a href="https://t.me/+79042474302" target="_blank" rel="noopener noreferrer">
-                <Button className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full font-medium flex items-center gap-2">
-                  <Icon name="Send" size={16} />
-                  Обсудить в Telegram
+              {!showLeadForm && leadStatus !== "success" && (
+                <Button
+                  onClick={() => setShowLeadForm(true)}
+                  className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full font-medium flex items-center gap-2"
+                >
+                  <Icon name="FileText" size={16} />
+                  Оставить заявку
                 </Button>
-              </a>
+              )}
+
+              {showLeadForm && leadStatus !== "success" && (
+                <form onSubmit={submitLead} className="flex flex-col gap-3 border-t border-white/10 pt-4">
+                  <p className="text-foreground text-sm font-medium">Оставьте контакт — пришлём точное КП</p>
+                  <input
+                    className={inputCls}
+                    placeholder="Ваше имя *"
+                    value={leadForm.name}
+                    onChange={e => setLeadForm(f => ({ ...f, name: e.target.value }))}
+                    required
+                  />
+                  <input
+                    className={inputCls}
+                    placeholder="Телефон *"
+                    value={leadForm.phone}
+                    onChange={e => setLeadForm(f => ({ ...f, phone: e.target.value }))}
+                    required
+                  />
+                  {leadStatus === "error" && (
+                    <p className="text-red-400 text-xs">Ошибка. Попробуйте ещё раз.</p>
+                  )}
+                  <Button
+                    type="submit"
+                    disabled={leadStatus === "loading" || !leadForm.name || !leadForm.phone}
+                    className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full font-medium disabled:opacity-50"
+                  >
+                    {leadStatus === "loading" ? "Отправляем..." : "Отправить"}
+                  </Button>
+                </form>
+              )}
+
+              {leadStatus === "success" && (
+                <div className="flex flex-col items-center gap-2 border-t border-white/10 pt-4 text-center">
+                  <Icon name="CheckCircle" size={24} className="text-primary" />
+                  <p className="text-foreground text-sm font-medium">Заявка отправлена!</p>
+                  <p className="text-muted-foreground text-xs">Денис получил расчёт и свяжется с вами.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

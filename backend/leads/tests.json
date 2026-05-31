@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Missing required fields",
+      "method": "POST",
+      "path": "/",
+      "body": {"email": "test@test.com"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Valid lead submission",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван Тест",
+        "phone": "+79001234567",
+        "source": "Форма сайта",
+        "company": "Тест ООО"
+      },
+      "expectedStatus": 200
+    }
+  ]
+}

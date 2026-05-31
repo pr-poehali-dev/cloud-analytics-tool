@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
+import { sendLead } from "@/lib/leads"
 
 const CHAT_URL = "https://functions.poehali.dev/77f9d867-9e0d-43a3-a98c-b15f7fe40d5c"
 
@@ -10,6 +11,7 @@ interface Message {
 }
 
 const WELCOME = "Привет! Я помогу подобрать кофе под ваш бренд — сорт, обжарку, упаковку и дизайн. Что вас интересует?"
+const MSG_THRESHOLD = 3
 
 export function AiChat() {
   const [open, setOpen] = useState(false)
@@ -18,6 +20,9 @@ export function AiChat() {
   ])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
+  const [showCapture, setShowCapture] = useState(false)
+  const [captureForm, setCaptureForm] = useState({ name: "", phone: "" })
+  const [captureStatus, setCaptureStatus] = useState<"idle" | "loading" | "success">("idle")
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -47,12 +52,32 @@ export function AiChat() {
         body: JSON.stringify({ messages: updated }),
       })
       const data = await res.json()
-      setMessages([...updated, { role: "assistant", content: data.reply || "Что-то пошло не так. Попробуйте ещё раз." }])
+      const newMessages = [...updated, { role: "assistant" as const, content: data.reply || "Что-то пошло не так. Попробуйте ещё раз." }]
+      setMessages(newMessages)
+      const userMsgs = newMessages.filter(m => m.role === "user").length
+      if (userMsgs >= MSG_THRESHOLD && captureStatus === "idle") {
+        setShowCapture(true)
+      }
     } catch {
       setMessages([...updated, { role: "assistant", content: "Ошибка соединения. Попробуйте позже." }])
     } finally {
       setLoading(false)
     }
+  }
+
+  const submitCapture = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!captureForm.name || !captureForm.phone) return
+    setCaptureStatus("loading")
+    const chatSummary = messages.filter(m => m.role === "user").map(m => m.content).join(" | ")
+    await sendLead({
+      name: captureForm.name,
+      phone: captureForm.phone,
+      source: "Чат с ИИ",
+      comment: `Диалог: ${chatSummary.slice(0, 300)}`,
+    })
+    setCaptureStatus("success")
+    setShowCapture(false)
   }
 
   const handleKey = (e: React.KeyboardEvent) => {
@@ -121,6 +146,37 @@ export function AiChat() {
               </div>
             </div>
           )}
+          {/* Lead capture after N messages */}
+          {showCapture && captureStatus !== "success" && (
+            <div className="mx-1 mb-2 rounded-xl border border-primary/30 bg-primary/8 p-3 flex flex-col gap-2">
+              <p className="text-foreground text-xs font-medium">Оставьте контакт — менеджер свяжется с готовым предложением</p>
+              <form onSubmit={submitCapture} className="flex flex-col gap-2">
+                <input
+                  className="w-full bg-white/8 border border-white/10 rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
+                  placeholder="Ваше имя"
+                  value={captureForm.name}
+                  onChange={e => setCaptureForm(f => ({ ...f, name: e.target.value }))}
+                  required
+                />
+                <input
+                  className="w-full bg-white/8 border border-white/10 rounded-lg px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
+                  placeholder="Телефон"
+                  value={captureForm.phone}
+                  onChange={e => setCaptureForm(f => ({ ...f, phone: e.target.value }))}
+                  required
+                />
+                <div className="flex gap-2">
+                  <Button type="submit" disabled={captureStatus === "loading"} className="flex-1 h-8 text-xs bg-primary text-primary-foreground rounded-lg">
+                    {captureStatus === "loading" ? "..." : "Отправить"}
+                  </Button>
+                  <button type="button" onClick={() => setShowCapture(false)} className="px-3 text-xs text-muted-foreground hover:text-foreground">
+                    Позже
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
           <div ref={bottomRef} />
         </div>
 
