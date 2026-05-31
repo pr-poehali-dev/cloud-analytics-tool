@@ -1,24 +1,21 @@
-import { Twitter, Github, Linkedin } from "lucide-react"
-
 export function FooterSection() {
   return (
     <footer className="w-full max-w-[1320px] mx-auto px-5 flex flex-col md:flex-row justify-between items-start gap-8 md:gap-0 py-10 md:py-[70px]">
-      {/* Left Section: Logo, Description, Social Links */}
+      {/* Left Section: Logo, Description, Contacts */}
       <div className="flex flex-col justify-start items-start gap-8 p-4 md:p-8">
         <div className="flex gap-3 items-stretch justify-center">
           <div className="text-center text-foreground text-xl font-semibold leading-4">Контракт Кофе</div>
         </div>
         <p className="text-foreground/90 text-sm font-medium leading-[18px] text-left">Кофе под вашим брендом</p>
-        <div className="flex justify-start items-start gap-3">
-          <a href="#" aria-label="Twitter" className="w-4 h-4 flex items-center justify-center">
-            <Twitter className="w-full h-full text-muted-foreground" />
+        <div className="flex flex-col justify-start items-start gap-2">
+          <p className="text-foreground/90 text-sm font-medium leading-5">Денис Гиззатов</p>
+          <a href="mailto:gid150@mail.ru" className="text-muted-foreground text-sm font-normal leading-5 hover:text-foreground transition-colors">
+            gid150@mail.ru
           </a>
-          <a href="#" aria-label="GitHub" className="w-4 h-4 flex items-center justify-center">
-            <Github className="w-full h-full text-muted-foreground" />
+          <a href="https://t.me/+79042474302" target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm font-normal leading-5 hover:text-foreground transition-colors">
+            +7 (904) 247-43-02
           </a>
-          <a href="#" aria-label="LinkedIn" className="w-4 h-4 flex items-center justify-center">
-            <Linkedin className="w-full h-full text-muted-foreground" />
-          </a>
+          <span className="text-muted-foreground text-xs leading-4">Telegram / WhatsApp</span>
         </div>
       </div>
       {/* Right Section: Product, Company, Resources */}
