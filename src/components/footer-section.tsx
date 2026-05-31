@@ -7,6 +7,7 @@ export function FooterSection() {
           <img src="https://cdn.poehali.dev/projects/6f691d2a-edcd-41eb-89ca-287319fe4ba9/bucket/e3430e27-5dda-49b7-a3c1-9bdd7e1728dc.jpeg" alt="Контракт Кофе" className="h-10 w-auto" />
         </div>
         <p className="text-foreground/90 text-sm font-medium leading-[18px] text-left">Кофе под вашим брендом</p>
+        <p className="text-muted-foreground text-xs leading-5">ООО «Контракт Кофе»</p>
         <div className="flex flex-col justify-start items-start gap-2">
           <p className="text-foreground/90 text-sm font-medium leading-5">Денис Гиззатов</p>
           <a href="mailto:gid150@mail.ru" className="text-muted-foreground text-sm font-normal leading-5 hover:text-foreground transition-colors">
