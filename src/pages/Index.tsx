@@ -4,6 +4,7 @@ import { SocialProof } from "@/components/social-proof"
 import { BentoSection } from "@/components/bento-section"
 import { ProductionGallery } from "@/components/production-gallery"
 import { LargeTestimonial } from "@/components/large-testimonial"
+import { PriceCalculator } from "@/components/price-calculator"
 import { PricingSection } from "@/components/pricing-section"
 import { TestimonialGridSection } from "@/components/testimonial-grid-section"
 import { FAQSection } from "@/components/faq-section"
@@ -35,6 +36,9 @@ const Index = () => {
         </AnimatedSection>
         <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
           <LargeTestimonial />
+        </AnimatedSection>
+        <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
+          <PriceCalculator />
         </AnimatedSection>
         <AnimatedSection
           id="pricing-section"
