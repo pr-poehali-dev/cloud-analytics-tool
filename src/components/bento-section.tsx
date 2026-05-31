@@ -42,33 +42,33 @@ const BentoCard = ({ title, description, Component }: BentoCardProps) => (
 export function BentoSection() {
   const cards = [
     {
-      title: "ИИ-ревью кода.",
-      description: "Умные подсказки для чистого кода в реальном времени.",
+      title: "Профессиональная обжарка.",
+      description: "Барабанная и конвекционная обжарка по вашим профилям — светлая, средняя, тёмная степень.",
       Component: AiCodeReviews,
     },
     {
-      title: "Превью в реальном времени",
-      description: "Общайтесь, работайте вместе и сразу видьте изменения.",
+      title: "Разработка рецептуры",
+      description: "Создаём уникальный вкусовой профиль под ваш бренд совместно с вашей командой.",
       Component: RealtimeCodingPreviews,
     },
     {
-      title: "Интеграции в один клик",
-      description: "Легко подключайте любимые инструменты разработки.",
+      title: "Дизайн и упаковка",
+      description: "Фирменная упаковка любого формата: пакеты, банки, стики, дой-паки.",
       Component: OneClickIntegrationsIllustration,
     },
     {
-      title: "Гибкое MCP-подключение",
-      description: "Простое управление доступом к MCP-серверам.",
+      title: "Гибкие объёмы",
+      description: "Работаем от 50 кг до нескольких тонн в месяц. Масштабируемся вместе с вами.",
       Component: MCPConnectivityIllustration,
     },
     {
-      title: "Параллельные ИИ-агенты",
-      description: "Решайте сложные задачи быстрее с несколькими агентами.",
+      title: "Контроль качества",
+      description: "Каждая партия проходит Q-граппинг и лабораторный анализ с протоколом.",
       Component: ParallelCodingAgents,
     },
     {
-      title: "Простой деплой",
-      description: "От кода до продакшена за считанные минуты.",
+      title: "Быстрая доставка",
+      description: "Логистика по всей России. Отгрузка в течение 5–10 рабочих дней после согласования.",
       Component: EasyDeployment,
     },
   ]
@@ -80,10 +80,10 @@ export function BentoSection() {
         <div className="self-stretch py-8 md:py-14 flex flex-col justify-center items-center gap-2 z-10">
           <div className="flex flex-col justify-start items-center gap-4">
             <h2 className="w-full max-w-[655px] text-center text-foreground text-4xl md:text-6xl font-semibold leading-tight md:leading-[66px]">
-              Усильте рабочий процесс с ИИ
+              Всё для запуска вашего бренда кофе
             </h2>
             <p className="w-full max-w-[600px] text-center text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-              Попросите ИИ-агента помочь с совместной работой, интеграциями и аналитикой для оптимизации процессов.
+              Полный цикл производства под СТМ: от разработки вкусового профиля до доставки готового продукта.
             </p>
           </div>
         </div>
