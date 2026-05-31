@@ -24,7 +24,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-3">
-            <span className="text-foreground text-xl font-semibold">Контракт Кофе</span>
+            <img src="https://cdn.poehali.dev/projects/6f691d2a-edcd-41eb-89ca-287319fe4ba9/bucket/e3430e27-5dda-49b7-a3c1-9bdd7e1728dc.jpeg" alt="Контракт Кофе" className="h-8 w-auto" />
           </div>
           <nav className="hidden md:flex items-center gap-2">
             {navItems.map((item) => (

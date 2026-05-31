@@ -4,7 +4,7 @@ export function FooterSection() {
       {/* Left Section: Logo, Description, Contacts */}
       <div className="flex flex-col justify-start items-start gap-8 p-4 md:p-8">
         <div className="flex gap-3 items-stretch justify-center">
-          <div className="text-center text-foreground text-xl font-semibold leading-4">Контракт Кофе</div>
+          <img src="https://cdn.poehali.dev/projects/6f691d2a-edcd-41eb-89ca-287319fe4ba9/bucket/e3430e27-5dda-49b7-a3c1-9bdd7e1728dc.jpeg" alt="Контракт Кофе" className="h-10 w-auto" />
         </div>
         <p className="text-foreground/90 text-sm font-medium leading-[18px] text-left">Кофе под вашим брендом</p>
         <div className="flex flex-col justify-start items-start gap-2">
