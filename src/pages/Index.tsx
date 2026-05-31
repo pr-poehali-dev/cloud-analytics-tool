@@ -11,6 +11,7 @@ import { FAQSection } from "@/components/faq-section"
 import { CTASection } from "@/components/cta-section"
 import { FooterSection } from "@/components/footer-section"
 import { AnimatedSection } from "@/components/animated-section"
+import { AiChat } from "@/components/ai-chat"
 
 const Index = () => {
   return (
@@ -64,6 +65,7 @@ const Index = () => {
           <FooterSection />
         </AnimatedSection>
       </div>
+      <AiChat />
     </div>
   )
 }
